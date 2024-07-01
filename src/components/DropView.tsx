@@ -145,7 +145,7 @@ function DropViewActual({
   }, [styleProp])
 
   useEffect(() => {
-    // console.log('dndEventManager1', dndEventManager)
+    console.log('dndEventManager1', dndEventManager)
     if (!dndEventManager) {
       return
     }
