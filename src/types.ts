@@ -1,11 +1,15 @@
 import { Animated, GestureResponderHandlers, ViewStyle, ViewProps, LayoutChangeEvent } from 'react-native'
+import { MutableRefObject } from 'react'
 
 export interface IDragContext {
   /** Calls dnd events */
   dndEventManager: IDndEventManager
+  // dndEventManager: Ref<IDndEventManager>
   /** Set only in DragProvider. use anywhere
    * @param dndId is necesary for set clone undefinded */
   setClone: (clone?: IDragClone, dndId?: number) => void
+  windowLayout: ILayoutData
+  // setWindowOffset: (p: IPosition) => void,
 }
 
 export interface IDragHandleContext {
@@ -13,6 +17,8 @@ export interface IDragHandleContext {
   panHandlers: GestureResponderHandlers
   /** Call in HandleView to show presence to parent view */
   setHandleExists: () => void
+  enableDraggable: () => void
+  disableDraggable: () => void
 }
 
 export interface ISimplePubSub {
@@ -23,17 +29,21 @@ export interface ISimplePubSub {
 
 export type DroppableEnterExit = (position: IPosition, payload?: any) => void
 
-export type DroppableDropOver = (position: IPosition, payload?: any, triggerNextDroppable?: () => void) => void
+export type DroppableDropOver = (position: IPosition, pointer: IPosition, payload?: any, triggerNextDroppable?: () => void) => void
 
 export type DraggableEnterOver = (position: IPosition, payload?: any) => void
 
 export type DraggableExit = (position: IPosition, payload?: any, overCount?: number) => void
 
-export type DraggableDragStart = (position: IPosition) => void
+export type DraggableDragStart = (position: IPosition, location?: IPosition) => void
+export type DraggableDrag = (position: IPosition) => void
 
-export type DraggableEnd = (position: IPosition, movableOffset?: IPosition) => void
+export type DraggableEnd = (position: IPosition, pointer: IPosition, movableOffset?: IPosition) => void
 
-export type DraggableDrop = (position: IPosition, movableOffset?: IPosition, payload?: any, overlapIndex?: number) => void
+export type DraggableDrop = (position: IPosition, pointer: IPosition, movableOffset?: IPosition, payload?: any, overlapIndex?: number) => void
+
+export type DroppableSlotActive = (position: IPosition, payload: any) => void
+export type DroppableSlotDeactivate = (position: IPosition, payload: any) => void
 
 export interface IDroppableEvents {
   /** Called when drag ends over it */
@@ -44,13 +54,19 @@ export interface IDroppableEvents {
   onEnter?: DroppableEnterExit
   /** Called when item is dragged off of it or drag is cancelled */
   onExit?: DroppableEnterExit
+
+  /** Style applied while slot is active */
+  slotActiveStyle?: ViewStyle
+  slots?: string[]
+  onSlotActive?: DroppableSlotActive
+  onSlotDeactivate?: DroppableSlotDeactivate
 }
 
 export interface IDraggableEvents {
   /** Called when a drag action begins */
   onDragStart?: DraggableDragStart
   /** Called repeatedly while dragged, not over any receiver */
-  onDrag?: DraggableDragStart
+  onDrag?: DraggableDrag
   /** Called when initially dragged over a new receiver */
   onEnter?: DraggableEnterOver
   /** Called repeatedly while dragged over a receiver */
@@ -73,17 +89,35 @@ export interface ILayoutData extends IPosition {
   height: number
   width: number
 }
+// export interface ILayoutFullData extends ILayoutData {
+//   left: number
+//   top: number
+//   x: number
+//   y: number
+// }
+export interface IViewportLayout extends ILayoutData {
+  scale?: number
+}
+
+export interface IPageViewportLayout extends IViewportLayout {
+  pageX: number
+  pageY: number
+}
 
 export interface IDroppable extends IDroppableEvents {
   id?: number
   layout: ILayoutData
   payload?: any
+  slots?: string[]
 }
 
 export interface IDraggable extends IDraggableEvents {
   id?: number
   payload?: any
   layout: ILayoutData
+  slots?: string[]
+  viewportCoordinateRef?: MutableRefObject<IPosition>
+  // relativeOffset?: IPosition
 }
 
 /** Register and update all draggables and droppables, call handlers and receive dnd events */
@@ -96,9 +130,9 @@ export interface IDndEventManager {
   updateDraggable: (draggable: IDraggable) => void
   unregisterDraggable: (id: number) => void
   /** @param draggableId dndId from registerDraggable */
-  handleDragStart: (draggableId: number, position: IPosition) => void
+  handleDragStart: (draggableId: number, position: IPosition, location: IPosition) => void
   /** @param draggableId dndId from registerDraggable */
-  handleDragEnd: (draggableId: number, position: IPosition) => void
+  handleDragEnd: (draggableId: number, position: IPosition, pointer: IPosition) => void
   /** @param draggableId dndId from registerDraggable */
   handleDragMove: (draggableId: number, position: IPosition) => void
 }
@@ -124,9 +158,11 @@ export interface IMockDndEventManager extends IDndEventManager {
 export interface IDropViewProps extends IDroppableEvents, ViewProps {
   /** Style applied while dragging over this view */
   overStyle?: ViewStyle
+
   payload?: any
   /** view can't receive draggables */
   disabled?: boolean
+  className?: string
 }
 
 export type ViewWithoutPanHandlersProps = Omit<ViewProps, keyof GestureResponderHandlers>
@@ -142,6 +178,8 @@ export interface IDragProviderProps {
   mockEventManager?: IDndEventManager
   /** droppable overlap call order ('first' | 'last' | 'all' | compare function) (default last) */
   overlapMode?: OverlapMode
+  className?: string
+  onLayout?: (args: IPageViewportLayout) => void
 }
 
 export type OverlapMode = 'first' | 'last' | 'all' | DroppablesComparer
@@ -177,8 +215,26 @@ export interface IDragViewProps extends IDragViewStyleProps, IDraggableEvents, V
   animationDropOptions?: TimingAnimationConfig
   /** in case you want to restore innser state (handy for nested movable) */
   movableOffset?: IPosition
-}
 
+  viewportLayout?: IViewportLayout
+  slots?: string[]
+  viewClassName?: string
+  name?: string
+  testID?: string
+  id?: string
+  mode?: MoveMode
+  proxy?: boolean
+
+  /** called where drag end ,and return zero */
+  useBounce?: boolean
+  /** called where drop and fadeout */
+  useFadeout?: boolean
+}
+export enum MoveMode {
+  X,
+  Y,
+  FREE,
+}
 /** Animated.TimingAnimationConfig without toValue and useNativeDriver*/
 export type TimingAnimationConfig = Omit<Animated.TimingAnimationConfig, 'toValue' | 'useNativeDriver'>
 
@@ -191,7 +247,8 @@ export interface IDragClone {
   /** pan to animate dragging */
   pan?: Animated.ValueXY
   /** Initial actual view absolute position */
-  position?: IPosition
+  // position?: IPosition
+  position?: IViewportLayout
   /** to animate onDrop effect */
   opacity?: Animated.Value
   /** to look same as actual view */
@@ -201,3 +258,5 @@ export interface IDragClone {
 }
 
 export const zeroPoint = { x: 0, y: 0 }
+export const zeroLayout = { x: 0, y: 0, width: 0, height: 0 }
+export const zeroViewport = { x: 0, y: 0, width: 0, height: 0, scale: 1 }

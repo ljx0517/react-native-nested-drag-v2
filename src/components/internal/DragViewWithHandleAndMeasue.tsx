@@ -1,5 +1,5 @@
 import { ViewStyle, MeasureOnSuccessCallback, GestureResponderHandlers } from 'react-native'
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useState, useMemo, useCallback, useEffect } from 'react'
 
 import { DragHandleContext } from '../../DragContext'
 import { IDragHandleContext, ViewWithoutPanHandlersProps } from '../../types'
@@ -11,7 +11,7 @@ export interface IDragViewWithHandleAndMeasueProps extends ViewWithoutPanHandler
   panHandlers: GestureResponderHandlers
 }
 
-export function DragViewWithHandleAndMeasue({ children, style, panHandlers, measureCallback, ...restProps }: IDragViewWithHandleAndMeasueProps) {
+export function DragViewWithHandleAndMeasure({ children, style, panHandlers, measureCallback, ...restProps }: IDragViewWithHandleAndMeasueProps) {
   const [handleExists, setHandleExists] = useState(false)
 
   const ownPanHandlers = useMemo(
@@ -20,13 +20,26 @@ export function DragViewWithHandleAndMeasue({ children, style, panHandlers, meas
     [handleExists, panHandlers],
   )
 
+  useEffect(() => {
+    // console.log('ownPanHandlers', ownPanHandlers)
+  }, [ownPanHandlers])
+
   const setHandle = useCallback(() => {
+    setHandleExists(true)
+  }, [])
+
+  const enableDraggable = useCallback(() => {
+    setHandleExists(false)
+  }, [])
+  const disableDraggable = useCallback(() => {
     setHandleExists(true)
   }, [])
 
   /** context for nested elements */
   const handleContext: IDragHandleContext = useMemo(() => {
     return {
+      enableDraggable,
+      disableDraggable,
       panHandlers: panHandlers,
       setHandleExists: setHandle,
     }
@@ -36,6 +49,8 @@ export function DragViewWithHandleAndMeasue({ children, style, panHandlers, meas
     () => ({ ...restProps, ...ownPanHandlers, measureCallback: measureCallback, style: style }),
     [restProps, measureCallback, style, ownPanHandlers],
   )
+
+  // console.log('[Drag][props] DragViewWithHandleAndMeasure.tsx',viewWithLayoutSubscriptionProps)
   return (
     <DragHandleContext.Provider value={handleContext}>
       <ViewWithLayoutSubscription {...viewWithLayoutSubscriptionProps}>{children}</ViewWithLayoutSubscription>

@@ -1,7 +1,7 @@
 {
-  "name": "react-native-nested-drag",
-  "version": "0.7.1",
-  "author": "Ovchinnikov Ivan",
+  "name": "react-native-nested-drag-v2",
+  "version": "0.8.0",
+  "author": "ljx0517",
   "license": "MIT",
   "description": "",
   "files": [
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/narfuls/react-native-nested-drag.git"
+    "url": "git+https://github.com/ljx0517/react-native-nested-drag-v2.git"
   },
   "keywords": [
     "react-native",
@@ -41,9 +41,9 @@
     "react-native": ">=0.61"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.4",
-    "@testing-library/jest-native": "5.4.1",
-    "@testing-library/react-native": "11.5.0",
+    "@babel/core": "^7.24.7",
+    "@testing-library/jest-native": "5.4.3",
+    "@testing-library/react-native": "12.5.1",
     "@types/jest": "^29.4.0",
     "@types/json-schema": "^7.0.11",
     "@types/react": "~18.0.24",

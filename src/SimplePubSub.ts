@@ -1,6 +1,9 @@
 import { ISimplePubSub } from './types'
 
 export class SimplePubSub implements ISimplePubSub {
+  constructor() {
+    // console.log('new SimplePubSub', Date.now())
+  }
   handlers: (() => void)[] = []
 
   subscribe(onLayout: () => void) {
