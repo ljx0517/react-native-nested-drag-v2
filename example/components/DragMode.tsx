@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 
-import { DragView, DropView } from 'react-native-nested-drag'
+import { DragView, DropView } from 'react-native-nested-drag-v2'
 
 export function DragMode() {
   const [disabled, setDisabled] = useState(false)
@@ -11,6 +11,7 @@ export function DragMode() {
   const [vibro, setVibro] = useState(0)
   return (
     <View style={styles.container}>
+      <Text>DragMode.tsx</Text>
       <DropView style={styles.drop} disabled={disabled}>
         <Text>drop here!</Text>
         <TouchableOpacity

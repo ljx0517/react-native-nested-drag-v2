@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
 import React, { useState } from 'react'
-import { DragProvider } from 'react-native-nested-drag'
+import { DragProvider } from 'react-native-nested-drag-v2'
 
 import { DropSum } from './components/DropSum'
 import { Styles } from './components/Styles'

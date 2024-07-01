@@ -1,18 +1,19 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { DragView, DragHandleView } from 'react-native-nested-drag'
+import { DragView, DragHandleView } from 'react-native-nested-drag-v2'
 
 export function Draghandle() {
   return (
     <DragView movable>
+      <Text>Draghandle.tsx</Text>
       <View style={styles.item}>
         <Text>part 1</Text>
         <DragHandleView style={styles.handle}>
-          <Text>drag here!</Text>
+          <Text>drag gere!</Text>
         </DragHandleView>
         <Text>part 2</Text>
         <DragHandleView style={styles.handle}>
-          <Text>drag here!</Text>
+          <Text>drag gere!</Text>
         </DragHandleView>
         <Text>part 3</Text>
       </View>

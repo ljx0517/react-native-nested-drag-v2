@@ -31,7 +31,7 @@ yarn add react-native-nested-drag
 # Usage
 Import the library components:
 ```ts
-import { DragView, DropView, DragProvider } from 'react-native-nested-drag'
+import { DragView, DropView, DragProvider } from 'react-native-nested-drag-v2'
 ```
 
 ## Basic example
@@ -153,7 +153,7 @@ Available all ```ViewProps```
 Import the library components:
 
 ```ts
-import { DragProvider, MockDndEventManager } from 'react-native-nested-drag'
+import { DragProvider, MockDndEventManager } from 'react-native-nested-drag-v2'
 ```
 
 Create  mockEventManager:

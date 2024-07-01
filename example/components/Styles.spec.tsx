@@ -3,7 +3,7 @@ import { ReactTestInstance } from 'react-test-renderer'
 import React from 'react'
 
 import { styles, Styles } from './Styles'
-import { DragProvider, MockDndEventManager } from 'react-native-nested-drag'
+import { DragProvider, MockDndEventManager } from 'react-native-nested-drag-v2'
 
 const mockEventManager = new MockDndEventManager()
 describe('Styles', () => {

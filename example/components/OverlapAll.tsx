@@ -1,14 +1,27 @@
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import React from 'react'
-import { DragView, DropView } from 'react-native-nested-drag'
+import { DragView, DropView } from 'react-native-nested-drag-v2'
 
 export function OverlapAll() {
   return (
     <>
-      <DropView style={styles.drop} overStyle={styles.dropOver}>
+      <Text>OverlapAll.tsx</Text>
+      <DropView
+        onDrop={() => {
+          console.log('onDrop outer')
+        }}
+        style={styles.drop}
+        overStyle={styles.dropOver}
+      >
         <View>
           <Text>drop outer!</Text>
-          <DropView overStyle={styles.dropInnerOver} style={styles.dropInner}>
+          <DropView
+            onDrop={() => {
+              console.log('onDrop inner')
+            }}
+            overStyle={styles.dropInnerOver}
+            style={styles.dropInner}
+          >
             <Text>drop inner!</Text>
           </DropView>
         </View>

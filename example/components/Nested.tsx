@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { PropsWithChildren } from 'react'
-import { DragView, DragHandleView } from 'react-native-nested-drag'
+import { DragView, DragHandleView } from 'react-native-nested-drag-v2'
 
 export function Nested() {
   return (
     <View style={styles.container}>
+      <Text>Nested.tsx</Text>
       <Draggable>
         <Draggable>
           <Draggable />
@@ -20,7 +21,7 @@ function Draggable({ children }: PropsWithChildren) {
     <View style={styles.dragContainer}>
       <DragView style={styles.draggable} dragStyle={styles.draggableDrag} copyDragStyle={styles.draggableClone}>
         <DragHandleView style={styles.handle}>
-          <Text>drag here!</Text>
+          <Text>drag gere!</Text>
         </DragHandleView>
         <View style={styles.child}>{children}</View>
       </DragView>
@@ -32,6 +33,10 @@ const styles = StyleSheet.create({
     padding: 10,
     width: '100%',
     justifyContent: 'flex-start',
+    transform:[
+      // {translateX: 100},
+      // {translateY: 30},
+    ]
   },
   dragContainer: {
     padding: 10,
@@ -40,6 +45,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     backgroundColor: 'white',
+    width: '100%'
   },
   draggableDrag: {
     borderWidth: 1,

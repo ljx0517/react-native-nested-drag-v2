@@ -1,16 +1,37 @@
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import React from 'react'
 
-import { DragView, DropView } from 'react-native-nested-drag'
+import { DragView, DropView } from 'react-native-nested-drag-v2'
 
 export function Styles() {
   return (
     <>
-      <DropView style={styles.drop} overStyle={styles.dropOver}>
+      <Text>Styles.tsx</Text>
+      <DropView
+        slots={['a']}
+        payload={'1111111'}
+        style={styles.drop}
+        onSlotActive={() => console.log('slot active')}
+        slotActiveStyle={{ borderColor: 'red', borderWidth: 2 }}
+        overStyle={styles.dropOver}
+      >
         <Text>drop here!</Text>
       </DropView>
       <View style={styles.container} testID={'draggables'}>
         <DragView
+          payload={'222222'}
+          style={styles.item}
+          dragStyle={styles.itemDragStyle}
+          overStyle={styles.itemOverStyle}
+          copyDragStyle={styles.itemCopyDragStyle}
+          copyOverStyle={styles.itemCopyOverStyle}
+        >
+          <Text>aaa</Text>
+        </DragView>
+        <DragView
+          movable
+          payload={'3333333'}
+          slots={['a']}
           style={styles.item}
           dragStyle={styles.itemDragStyle}
           overStyle={styles.itemOverStyle}
@@ -19,6 +40,8 @@ export function Styles() {
         />
         <DragView
           movable
+          payload={'444444'}
+          slots={['b']}
           style={styles.item}
           dragStyle={styles.itemDragStyle}
           overStyle={styles.itemOverStyle}

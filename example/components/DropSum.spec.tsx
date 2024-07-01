@@ -2,7 +2,7 @@ import { render, screen, act } from '@testing-library/react-native'
 import React from 'react'
 
 import { DropSum } from './DropSum'
-import { DragProvider, MockDndEventManager } from 'react-native-nested-drag'
+import { DragProvider, MockDndEventManager } from 'react-native-nested-drag-v2'
 
 const mockEventManager = new MockDndEventManager()
 describe('DropSum', () => {

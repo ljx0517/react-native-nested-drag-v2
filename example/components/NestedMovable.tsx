@@ -1,14 +1,15 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { PropsWithChildren, useState } from 'react'
-import { DragView, DragHandleView, IPosition, DraggableEnd, zeroPoint } from 'react-native-nested-drag'
+import { DragView, DragHandleView, IPosition, DraggableEnd, zeroPoint } from 'react-native-nested-drag-v2'
 
 export function NestedMovable() {
-  const [offset1, setOffset1] = useState(zeroPoint)
+  const [offset1, setOffset1] = useState({ x: -100, y: -30 })
   const [offset11, setOffset11] = useState(zeroPoint)
   const [offset12, setOffset12] = useState(zeroPoint)
   const [offset111, setOffset111] = useState(zeroPoint)
   return (
     <View style={styles.container}>
+      <Text>NestedMovable.tsx</Text>
       <Draggable payload={1} offset={offset1} setOffset={setOffset1}>
         <Draggable payload={11} offset={offset11} setOffset={setOffset11}>
           <Draggable payload={111} offset={offset111} setOffset={setOffset111} />
@@ -26,6 +27,7 @@ interface IDraggableProps {
 }
 function Draggable({ children, payload, offset = zeroPoint, setOffset }: PropsWithChildren<IDraggableProps>) {
   const saveOffset: DraggableEnd = (_, offset: IPosition) => {
+    console.log('payload', payload, 'offset', offset, _)
     setOffset(offset)
   }
   return (
@@ -40,7 +42,7 @@ function Draggable({ children, payload, offset = zeroPoint, setOffset }: PropsWi
         copyDragStyle={styles.draggableClone}
       >
         <DragHandleView style={styles.handle}>
-          <Text>drag here!</Text>
+          <Text>drag gere!</Text>
         </DragHandleView>
         <View style={styles.child}>{children}</View>
       </DragView>
@@ -52,6 +54,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: '100%',
     justifyContent: 'flex-start',
+    transform: [{ translateX: 100 }, { translateY: 30 }],
   },
   dragContainer: {
     padding: 10,

@@ -28,7 +28,6 @@ function DropViewActual({
   onOver,
   ...restProps
 }: IDropViewProps) {
-
   // console.log('Droppable DropViewActual')
   // useEffect(() => {
   //   console.log('DropView onOver changed')
@@ -68,13 +67,12 @@ function DropViewActual({
   // }, [slots])
 
   const { dndEventManager } = useContext(DragContext)
-  // console.log('dropview dndEventManager', dndEventManager)
+  console.log('dropview dndEventManager', dndEventManager)
   /** id from IDndEventManager */
   const dndId = useRef<number | undefined>(undefined)
   const [style, setStyle] = useState(styleProp)
   const layoutRef = useRef<ILayoutData>({ x: -1, y: -1, width: 0, height: 0 })
   const slotActive = useRef(false)
-
 
   const onEnter = useCallback(
     (position: IPosition, payload?: any) => {
@@ -96,7 +94,6 @@ function DropViewActual({
     [styleProp, overStyle, onExitProp],
   )
 
-
   const onDrop = useCallback(
     (position: IPosition, payload?: any, triggerNextDroppable?: () => void) => {
       overStyle && setStyle(styleProp)
@@ -105,18 +102,17 @@ function DropViewActual({
     [styleProp, overStyle, onDropProp],
   )
 
-
   const onSlotActive = useCallback(
     (position: IPosition, payload?: any) => {
       slotActive.current = true
-      slotActiveStyle && setStyle([styleProp,slotActiveStyle])
+      slotActiveStyle && setStyle([styleProp, slotActiveStyle])
       onSlotActiveProp && onSlotActiveProp(position, payload)
     },
     [styleProp, slotActiveStyle, onSlotActiveProp],
   )
   const onSlotDeactivate = useCallback(
     (position: IPosition, payload?: any) => {
-      slotActive.current = false;
+      slotActive.current = false
       styleProp && setStyle(styleProp)
       onSlotDeactivateProp && onSlotDeactivateProp(position, payload)
     },
@@ -138,7 +134,7 @@ function DropViewActual({
       onSlotActive: onSlotActive,
       onSlotDeactivate: onSlotDeactivate,
     }
-  }, [onOver, onDrop, onEnter, onExit, payload, slots,onSlotActive, onSlotDeactivate])
+  }, [onOver, onDrop, onEnter, onExit, payload, slots, onSlotActive, onSlotDeactivate])
 
   useEffect(() => {
     setStyle(styleProp)
