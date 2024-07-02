@@ -1,5 +1,5 @@
 import { Animated, GestureResponderHandlers, ViewStyle, ViewProps, LayoutChangeEvent } from 'react-native'
-import { MutableRefObject } from 'react'
+import { MutableRefObject } from "react";
 
 export interface IDragContext {
   /** Calls dnd events */
@@ -218,7 +218,7 @@ export interface IDragViewProps extends IDragViewStyleProps, IDraggableEvents, V
   /** in case you want to restore innser state (handy for nested movable) */
   movableOffset?: IPosition
 
-  viewportLayout?: IViewportLayout
+  viewportLayout?: MutableRefObject<IViewportLayout>
   slots?: string[]
   viewClassName?: string
   name?: string

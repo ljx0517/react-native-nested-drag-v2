@@ -2,7 +2,7 @@ import { Animated, MeasureOnSuccessCallback, PanResponder, Vibration, View, View
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { DragCloneContext, DragContext, DragViewOffsetContext } from '../DragContext'
-import { IDraggable, IDragViewProps, ILayoutData, IPosition, MoveMode, zeroPoint, zeroViewport } from '../types'
+import { IDraggable, IDragViewProps, ILayoutData, IPosition, MoveMode, zeroPoint/*, zeroViewport*/ } from '../types'
 import { DragViewWithHandleAndMeasure } from './internal/DragViewWithHandleAndMeasue'
 
 const empty = {}
@@ -37,7 +37,7 @@ export function DragView(props: IDragViewProps) {
 function DragViewActual({
   slots,
   proxy = true,
-  viewportLayout = zeroViewport,
+  viewportLayout,
   mode = MoveMode.FREE,
   useBounce = true,
   useFadeout = true,
@@ -151,16 +151,28 @@ function DragViewActual({
           width: targetWidth,
           height: targetHeight,
         } = layoutRef.current
-        const {
-          width: viewWidth = 0,
-          height: viewHeight = 0,
-          x: viewOffsetX = 0,
-          y: viewOffsetY = 0,
-          scale: viewScale = 1,
-          // pageX,
-          // pageY,
-        } = viewportLayout.current
-        console.log('viewportLayout', viewportLayout.current)
+        let viewWidth = 0;
+        let viewHeight = 0;
+        let viewOffsetX = 0;
+        let viewOffsetY = 0;
+        let viewScale = 1;
+        if (viewportLayout && viewportLayout.current) {
+          viewWidth = viewportLayout.current.width
+          viewHeight = viewportLayout.current.height
+          viewOffsetX = viewportLayout.current.x
+          viewOffsetY = viewportLayout.current.y
+          viewScale = viewportLayout.current.scale || 1
+        }
+        // let {
+        //   width: viewWidth = 0,
+        //   height: viewHeight = 0,
+        //   x: viewOffsetX = 0,
+        //   y: viewOffsetY = 0,
+        //   scale: viewScale = 1,
+        //   // pageX,
+        //   // pageY,
+        // } = viewportLayout!.current
+        console.log('viewportLayout', viewportLayout)
         const targetOffsetX = -(targetWidth - targetWidth * viewScale) / 2
         const targetOffsetY = -(targetHeight - targetHeight * viewScale) / 2
         const viewX = (viewWidth - viewWidth * viewScale) / 2 + viewOffsetX
