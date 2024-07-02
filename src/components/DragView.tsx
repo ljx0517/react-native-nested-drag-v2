@@ -136,7 +136,7 @@ function DragViewActual({
       // console.log('setClone0', { exists, proxy, name: restProps.name}, viewportLayout)
       if (!exists) {
         if (proxy) {
-          ctxSetClone(undefined, dndId.current)
+          // ctxSetClone(undefined, dndId.current)
         }
       } else {
         // const cloneStyle = styleParam ? styleParam : copyDragStyle ? copyDragStyle : defaultStyleRef.current
