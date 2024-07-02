@@ -159,8 +159,8 @@ function DragViewActual({
           scale: viewScale = 1,
           // pageX,
           // pageY,
-        } = viewportLayout
-        console.log('viewportLayout', viewportLayout)
+        } = viewportLayout.current
+        console.log('viewportLayout', viewportLayout.current)
         const targetOffsetX = -(targetWidth - targetWidth * viewScale) / 2
         const targetOffsetY = -(targetHeight - targetHeight * viewScale) / 2
         const viewX = (viewWidth - viewWidth * viewScale) / 2 + viewOffsetX
