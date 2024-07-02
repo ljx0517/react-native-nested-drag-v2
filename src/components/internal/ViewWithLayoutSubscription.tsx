@@ -12,15 +12,15 @@ export interface IViewWithLayoutSubscriptionProps extends ViewProps {
 export function ViewWithLayoutSubscription({ measureCallback, onLayout: onLayoutProp, ...props }: IViewWithLayoutSubscriptionProps) {
   /** viewRef to measure */
   const viewRef = useRef<View>(null)
-  // const onLayoutPubSub = useRef(new SimplePubSub()).current
-  const onLayoutPubSub = useRef<SimplePubSub>()
+  const onLayoutPubSub = useRef(new SimplePubSub())
+  // const onLayoutPubSub = useRef<SimplePubSub>()
 
   const parentOnLayout = useContext(DragViewLayoutContext)
 
-  useEffect(() => {
-    onLayoutPubSub.current = new SimplePubSub()
-    // console.log('ViewWithLayoutSubscription', onLayoutProp, props)
-  }, [])
+  // useEffect(() => {
+  //   onLayoutPubSub.current = new SimplePubSub()
+  //   // console.log('ViewWithLayoutSubscription', onLayoutProp, props)
+  // }, [])
 
   const onLayout = useCallback(
     (evt?: LayoutChangeEvent) => {
@@ -28,13 +28,10 @@ export function ViewWithLayoutSubscription({ measureCallback, onLayout: onLayout
       // need re-measure the viewRef to get the correct position
       // so move it to useEffect
       // console.log('viewRef?.current', viewRef?.current)
-      // if (viewRef?.current) {
-      //   viewRef.current.measure(measureCallback)
-      // }
-      if (onLayoutPubSub.current) {
-        onLayoutPubSub.current.publish()
+      if (viewRef?.current) {
+        viewRef.current.measure(measureCallback)
       }
-      // onLayoutPubSub.publish() // origin
+      onLayoutPubSub.current.publish()
       onLayoutProp && evt && onLayoutProp(evt)
     },
     [onLayoutPubSub, measureCallback, onLayoutProp],
@@ -73,8 +70,7 @@ export function ViewWithLayoutSubscription({ measureCallback, onLayout: onLayout
   const viewProps = useMemo(() => ({ ...props, onLayout: onLayout }), [props, onLayout])
   // console.log('[drag][props] ViewWithLayoutSubscription.tsx', viewProps)
   return (
-    // @ts-ignore
-    <DragViewLayoutContext.Provider value={onLayoutPubSub}>
+    <DragViewLayoutContext.Provider value={onLayoutPubSub.current}>
       <Animated.View {...viewProps} ref={viewRef}>
         {props.children}
       </Animated.View>
