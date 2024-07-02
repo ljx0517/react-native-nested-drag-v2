@@ -195,6 +195,13 @@ function DragViewActual({
         //   y: getCloneOffset('height') + viewportLayout.y  + movedOffsetRef.current.y * viewportLayout?.scale,
         // })
         if (proxy) {
+          console.log('setClone1', {
+            x: (absolutePos.current.x - parentOffset.x) * viewScale + viewX + moduleX + targetOffsetX,
+            y: (absolutePos.current.y - parentOffset.y) * viewScale + viewY + moduleY + targetOffsetY,
+            width: layoutRef.current.width,
+            height: layoutRef.current.height,
+            scale: viewScale,
+          })
           dndId.current !== undefined &&
             ctxSetClone({
               draggableDndId: dndId.current,
