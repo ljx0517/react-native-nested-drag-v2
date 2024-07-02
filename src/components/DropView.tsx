@@ -67,7 +67,7 @@ function DropViewActual({
   // }, [slots])
 
   const { dndEventManager } = useContext(DragContext)
-  console.log('dropview dndEventManager', dndEventManager)
+  // console.log('dropview dndEventManager', dndEventManager)
   /** id from IDndEventManager */
   const dndId = useRef<number | undefined>(undefined)
   const [style, setStyle] = useState(styleProp)

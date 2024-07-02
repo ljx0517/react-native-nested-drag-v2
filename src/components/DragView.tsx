@@ -131,7 +131,7 @@ function DragViewActual({
    * setClone(true) sets clone with default style*/
   const setClone = useCallback(
     (exists = false, styleParam?: ViewStyle) => {
-      // console.log('setClone0', exists, proxy, restProps.name)
+      console.log('setClone0', restProps.name)
       // window.viewportLayout = viewportLayout.current
       // console.log('setClone0', { exists, proxy, name: restProps.name}, viewportLayout)
       if (!exists) {
@@ -160,6 +160,7 @@ function DragViewActual({
           // pageX,
           // pageY,
         } = viewportLayout
+        console.log('viewportLayout', viewportLayout)
         const targetOffsetX = -(targetWidth - targetWidth * viewScale) / 2
         const targetOffsetY = -(targetHeight - targetHeight * viewScale) / 2
         const viewX = (viewWidth - viewWidth * viewScale) / 2 + viewOffsetX

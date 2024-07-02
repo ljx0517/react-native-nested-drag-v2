@@ -40,7 +40,7 @@ export function DragProvider({ children, mockEventManager, overlapMode, onLayout
   /** avoid disable clone when new drag have been started */
   const setCloneState = (c: IDragClone | undefined, dndId?: number) => {
     if (c) {
-      console.log('setCloneState', c, 'dndId', dndId)
+      console.log('setCloneState', c.position, 'dndId', dndId)
       lastCloneIdRef.current = c.draggableDndId
       setClone(c)
     } else if (lastCloneIdRef.current == dndId) {

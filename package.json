@@ -15,7 +15,7 @@
   "scripts": {
     "example": "cd ./example && npm run start",
     "build": "yarn build:esm && yarn build:cjs",
-    "build:dist": "yarn build:esm && yarn build:cjs && rm -rf ./demo/node_modules/react-native-nested-drag-v2/build && cp -r ./build ./demo/node_modules/react-native-nested-drag-v2",
+    "build:dev": "yarn build:esm && yarn build:cjs && rm -rf ./demo/node_modules/react-native-nested-drag-v2/build && cp -r ./build ./demo/node_modules/react-native-nested-drag-v2",
     "build:esm": "tsc",
     "build:cjs": "tsc --module commonjs --outDir build/cjs",
     "lint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\"",
