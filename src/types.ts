@@ -9,6 +9,7 @@ export interface IDragContext {
    * @param dndId is necesary for set clone undefinded */
   setClone: (clone?: IDragClone, dndId?: number) => void
   windowLayout: ILayoutData
+  // setDragCloneContainer: (node: ReactNode) => void
   // setWindowOffset: (p: IPosition) => void,
 }
 
@@ -122,6 +123,7 @@ export interface IDraggable extends IDraggableEvents {
 
 /** Register and update all draggables and droppables, call handlers and receive dnd events */
 export interface IDndEventManager {
+  uniqueId?: any
   registerDroppable: (droppable: IDroppable) => number
   updateDroppable: (droppable: IDroppable) => void
   unregisterDroppable: (id: number) => void

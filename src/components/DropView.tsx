@@ -1,5 +1,5 @@
 import { View, MeasureOnSuccessCallback } from 'react-native'
-import React, { useRef, useState, useContext, useEffect, useCallback, useMemo } from 'react'
+import { useRef, useState, useContext, useEffect, useCallback, useMemo } from 'react'
 
 import { IDroppable, IDropViewProps, IPosition, ILayoutData } from '../types'
 import { DragContext, DragCloneContext } from '../DragContext'
@@ -141,7 +141,7 @@ function DropViewActual({
   }, [styleProp])
 
   useEffect(() => {
-    console.log('dndEventManager1', dndEventManager)
+    // console.log('dndEventManager1', dndEventManager)
     if (!dndEventManager) {
       return
     }

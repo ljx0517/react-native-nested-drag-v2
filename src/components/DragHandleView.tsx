@@ -1,5 +1,5 @@
 import { View, ViewProps } from 'react-native'
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 
 import { DragHandleContext, DragCloneContext } from '../DragContext'
 

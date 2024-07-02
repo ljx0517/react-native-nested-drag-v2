@@ -12,11 +12,7 @@ export function DropSum() {
   return (
     <View style={styles.container}>
       <Text>DropSum.tsx</Text>
-      <DropView
-        style={styles.drop}
-        disabled={disabled}
-        onDrop={add}
-      >
+      <DropView style={styles.drop} disabled={disabled} onDrop={add}>
         <Text>drop here! Sum: {sum}</Text>
         <TouchableOpacity
           onPress={() => {

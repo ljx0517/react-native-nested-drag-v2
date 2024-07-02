@@ -1,5 +1,5 @@
 import { Animated, MeasureOnSuccessCallback, PanResponder, Vibration, View, ViewStyle } from 'react-native'
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { DragCloneContext, DragContext, DragViewOffsetContext } from '../DragContext'
 import { IDraggable, IDragViewProps, ILayoutData, IPosition, MoveMode, zeroPoint, zeroViewport } from '../types'
@@ -132,12 +132,11 @@ function DragViewActual({
   const setClone = useCallback(
     (exists = false, styleParam?: ViewStyle) => {
       // console.log('setClone0', exists, proxy, restProps.name)
-
       // window.viewportLayout = viewportLayout.current
-      console.log('setClone0', restProps.name, viewportLayout)
+      // console.log('setClone0', { exists, proxy, name: restProps.name}, viewportLayout)
       if (!exists) {
         if (proxy) {
-          // ctxSetClone(undefined, dndId.current)
+          ctxSetClone(undefined, dndId.current)
         }
       } else {
         // const cloneStyle = styleParam ? styleParam : copyDragStyle ? copyDragStyle : defaultStyleRef.current
@@ -168,9 +167,9 @@ function DragViewActual({
         const moduleX = -parentOffset.x * viewScale
         const moduleY = -parentOffset.y * viewScale
 
-        console.log('setClone6', { viewX, viewY })
-        console.log('setClone7', { moduleX, moduleY })
-        console.log('setClone8', { targetOffsetX, targetOffsetY })
+        // console.log('setClone6', { viewX, viewY })
+        // console.log('setClone7', { moduleX, moduleY })
+        // console.log('setClone8', { targetOffsetX, targetOffsetY })
         // console.log('setClone9', parentOffset)
         // console.log('setClone10', absolutePos.current)
 
@@ -393,6 +392,7 @@ function DragViewActual({
     if (!dndEventManager) {
       return
     }
+
     //  dnd handlers should contain uptodate context
     const draggable: IDraggable = {
       id: dndId.current,
@@ -432,7 +432,7 @@ function DragViewActual({
   }, [movableOffset, pan, setDefaultStyle])
 
   useEffect(() => {
-    if (!dndEventManager) {
+    if (!dndEventManager || !dndEventManager) {
       return
     }
     return () => {
@@ -468,7 +468,22 @@ function DragViewActual({
             x: _evt.nativeEvent.locationX,
             y: _evt.nativeEvent.locationY,
           }
-          onLongPressTimeout = setTimeout(() => {
+          if (longPressDelay > 0) {
+            onLongPressTimeout = setTimeout(() => {
+              console.log('[PanResponder] onPanResponderGrant', restProps.name)
+              dndId.current !== undefined &&
+                dndEventManager.handleDragStart(
+                  dndId.current,
+                  {
+                    x: gestureState.moveX,
+                    y: gestureState.moveY,
+                  },
+                  pointerRef.current,
+                )
+              shouldDrag = true
+              vibroDuration > 0 && Vibration.vibrate(vibroDuration)
+            }, longPressDelay)
+          } else {
             console.log('[PanResponder] onPanResponderGrant', restProps.name)
             dndId.current !== undefined &&
               dndEventManager.handleDragStart(
@@ -480,8 +495,7 @@ function DragViewActual({
                 pointerRef.current,
               )
             shouldDrag = true
-            vibroDuration > 0 && Vibration.vibrate(vibroDuration)
-          }, longPressDelay)
+          }
         },
         onPanResponderMove: (_evt, gestureState) => {
           // console.log('[PanResponder] onPanResponderMove', restProps.name)

@@ -1,5 +1,5 @@
 import { Animated, View, MeasureOnSuccessCallback, ViewProps, LayoutChangeEvent } from 'react-native'
-import React, { useRef, useContext, useEffect, useCallback, useMemo } from 'react'
+import { useRef, useContext, useEffect, useCallback, useMemo } from 'react'
 
 import { DragViewLayoutContext } from '../../DragContext'
 import { SimplePubSub } from '../../SimplePubSub'

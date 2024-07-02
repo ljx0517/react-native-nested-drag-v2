@@ -2,11 +2,11 @@
   "include": ["src"],
   "exclude": ["node_modules", "build"],
   "compilerOptions": {
+    "jsx": "react-jsx",
     "declaration": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
-    "jsx": "react",
     "lib": ["dom", "esnext"],
     "module": "esnext",
     "moduleResolution": "node",

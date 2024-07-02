@@ -3,7 +3,7 @@ import { IDroppable, IDraggable, IPosition, IDndEventManager, OverlapMode } from
 // const DndEventManagerInstance: DndEventManager | null = null
 export class DndEventManager implements IDndEventManager {
   constructor(overlapMode?: OverlapMode) {
-    console.log('new DndEventManager', Date.now())
+    console.log('new DndEventManager', Date.now(), overlapMode)
     // @ts-ignore
     this.uniqueId = Date.now()
     this.overlapMode = overlapMode ? overlapMode : 'last'
@@ -13,6 +13,7 @@ export class DndEventManager implements IDndEventManager {
     // }
     // return DndEventManagerInstance
   }
+  uniqueId: any
   overlapMode: OverlapMode
   droppables: IDroppable[] = []
   draggables: IDraggable[] = []

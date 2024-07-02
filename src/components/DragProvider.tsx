@@ -1,31 +1,46 @@
+import { useRef, useState, PropsWithChildren, useMemo, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
-import React, { useRef, useState, PropsWithChildren, useMemo, Ref, ReactNode } from 'react'
-
-import { IDragContext, IDragClone, IPosition, IDragProviderProps, zeroPoint, ILayoutData, zeroLayout } from '../types'
+import {
+  IDragContext,
+  IDragClone,
+  IPosition,
+  IDragProviderProps,
+  zeroPoint,
+  ILayoutData,
+  zeroLayout,
+  IDndEventManager
+} from '../types'
 import { DragContext, DragCloneContext } from '../DragContext'
 import { DndEventManager } from '../EventManager'
 import { DragClone } from './internal/DragClone'
 
 export function DragProvider({ children, mockEventManager, overlapMode, onLayout }: PropsWithChildren<IDragProviderProps>) {
-  const eventManager = useRef(mockEventManager ? mockEventManager : new DndEventManager(overlapMode)).current
-  // const eventManager = useRef<IDndEventManager>()
+  // console.error('DragProvider.tsx', mockEventManager, overlapMode)
+  // const eventManager = useRef(mockEventManager ? mockEventManager : new DndEventManager(overlapMode)).current
+  // console.log('DragProvider new DndEventManager')
+  // const eventManager = useRef(mockEventManager ? mockEventManager : new DndEventManager(overlapMode))
+  const eventManager = useRef<IDndEventManager>()
+  // const dragCloneContainer = useRef<ReactNode>()
+  // const setDragCloneContainer = (node: ReactNode) => {
+  //   dragCloneContainer.current = node
+  // }
+  // if (eventManager.current) {
+  //   console.log(`DragProvider DndEventManager2 ${eventManager.current?.uniqueId}`)
+  // }
   const [clone, setClone] = useState<IDragClone>()
   const [windowOffset, setWindowOffset] = useState<IPosition>(zeroPoint)
   const [windowLayout, setWindowLayout] = useState<ILayoutData>(zeroLayout)
 
-  const setCloneContainer = (nodeRef: Ref<ReactNode>) => {
-    console.log('setCloneContainer', nodeRef)
-  }
-
-  // useEffect(() => {
-  //   eventManager.current = mockEventManager ? mockEventManager : new DndEventManager(overlapMode)
-  // }, [])
+  useEffect(() => {
+    eventManager.current = mockEventManager ? mockEventManager : new DndEventManager(overlapMode)
+    // console.log(`DragProvider DndEventManager1 ${eventManager.current?.uniqueId}`)
+  }, [mockEventManager, overlapMode])
 
   const lastCloneIdRef = useRef<number | undefined>()
   /** avoid disable clone when new drag have been started */
   const setCloneState = (c: IDragClone | undefined, dndId?: number) => {
     if (c) {
-      // console.log('setCloneState', c)
+      console.log('setCloneState', c, 'dndId', dndId)
       lastCloneIdRef.current = c.draggableDndId
       setClone(c)
     } else if (lastCloneIdRef.current == dndId) {
@@ -34,11 +49,12 @@ export function DragProvider({ children, mockEventManager, overlapMode, onLayout
   }
   // @ts-ignore
   const context: IDragContext = useMemo(() => {
+
     return {
-      dndEventManager: eventManager,
+      dndEventManager: eventManager.current,
       setClone: setCloneState,
       windowLayout,
-      setCloneContainer,
+      // setDragCloneContainer,
     }
   }, [eventManager, windowLayout])
 

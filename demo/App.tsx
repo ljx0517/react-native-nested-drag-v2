@@ -69,6 +69,7 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  '*': { userSelect: 'none' },
   container: { position: 'absolute', flex: 1, width: '100%', justifyContent: 'flex-start', paddingTop: 30 },
   menu: {
     flexDirection: 'row',

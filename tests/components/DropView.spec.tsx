@@ -167,11 +167,11 @@ describe('DropView', () => {
       })
 
       expect(measure).toBeCalledTimes(2)
-      expect(context.dndEventManager.updateDroppable).toBeCalled()
+      expect(context.dndEventManager.current.updateDroppable).toBeCalled()
 
       unmount()
 
-      expect(context.dndEventManager.unregisterDroppable).toBeCalledTimes(1)
+      expect(context.dndEventManager.current.unregisterDroppable).toBeCalledTimes(1)
     })
 
     it("doesn't register droppaple inside clone", () => {

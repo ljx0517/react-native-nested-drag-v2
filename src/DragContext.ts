@@ -6,13 +6,13 @@ import { DndEventManager } from './EventManager'
 
 export const DragContext = createContext<IDragContext>({
   // @ts-ignore
-  // dndEventManager: null, // new DndEventManager(),
   dndEventManager: new DndEventManager(),
+  // dndEventManager: createRef(new DndEventManager()), // new DndEventManager(),
+  // dndEventManager: new DndEventManager(),
   setClone: () => undefined,
   windowLayout: zeroLayout,
-
+  // setDragCloneContainer: (node: ReactNode) => undefined,
   // setWindowOffset: () => undefined,
-
 })
 
 export const DragCloneContext = createContext<boolean>(false)

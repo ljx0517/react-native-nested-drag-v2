@@ -1,5 +1,5 @@
 import { ViewStyle, MeasureOnSuccessCallback, GestureResponderHandlers } from 'react-native'
-import React, { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 
 import { DragHandleContext } from '../../DragContext'
 import { IDragHandleContext, ViewWithoutPanHandlersProps } from '../../types'
