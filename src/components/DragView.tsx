@@ -2,7 +2,7 @@ import { Animated, MeasureOnSuccessCallback, PanResponder, Vibration, View, View
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { DragCloneContext, DragContext, DragViewOffsetContext } from '../DragContext'
-import { IDraggable, IDragViewProps, ILayoutData, IPosition, MoveMode, zeroPoint/*, zeroViewport*/ } from '../types'
+import { IDraggable, IDragViewProps, ILayoutData, IPosition, MoveMode, zeroPoint /*, zeroViewport*/ } from '../types'
 import { DragViewWithHandleAndMeasure } from './internal/DragViewWithHandleAndMeasue'
 
 const empty = {}
@@ -125,6 +125,71 @@ function DragViewActual({
   //   const b = (layoutRef.current[prop] - layoutRef.current[prop] * viewportLayout.scale ) / 2
   //   return a - b
   // }, [viewportLayout])
+
+  const getTargetPostion = useCallback(() => {
+    const {
+      // x: targetX, y: targetY,
+      width: targetWidth,
+      height: targetHeight,
+    } = layoutRef.current
+    let viewWidth = 0
+    let viewHeight = 0
+    let viewOffsetX = 0
+    let viewOffsetY = 0
+    let viewScale = 1
+    if (viewportLayout && viewportLayout.current) {
+      viewWidth = viewportLayout.current.width
+      viewHeight = viewportLayout.current.height
+      viewOffsetX = viewportLayout.current.x
+      viewOffsetY = viewportLayout.current.y
+      viewScale = viewportLayout.current.scale || 1
+    }
+    // let {
+    //   width: viewWidth = 0,
+    //   height: viewHeight = 0,
+    //   x: viewOffsetX = 0,
+    //   y: viewOffsetY = 0,
+    //   scale: viewScale = 1,
+    //   // pageX,
+    //   // pageY,
+    // } = viewportLayout!.current
+    console.log('viewportLayout', viewportLayout?.current)
+    const targetOffsetX = -(targetWidth - targetWidth * viewScale) / 2
+    const targetOffsetY = -(targetHeight - targetHeight * viewScale) / 2
+    const viewX = (viewWidth - viewWidth * viewScale) / 2 + viewOffsetX
+    const viewY = (viewHeight - viewHeight * viewScale) / 2 + viewOffsetY
+    const moduleX = -parentOffset.x * viewScale
+    const moduleY = -parentOffset.y * viewScale
+
+    // console.log('setClone6', { viewX, viewY })
+    // console.log('setClone7', { moduleX, moduleY })
+    // console.log('setClone8', { targetOffsetX, targetOffsetY })
+    // console.log('setClone9', parentOffset)
+    // console.log('setClone10', absolutePos.current)
+
+    absPositionRef.current = {
+      x: viewX + moduleX + targetOffsetX,
+      y: viewY + moduleY + targetOffsetY,
+      width: layoutRef.current.width,
+      height: layoutRef.current.height,
+    }
+
+    console.log('setClone1', {
+      x: (absolutePos.current.x - parentOffset.x) * viewScale + viewX + moduleX + targetOffsetX,
+      y: (absolutePos.current.y - parentOffset.y) * viewScale + viewY + moduleY + targetOffsetY,
+      width: layoutRef.current.width,
+      height: layoutRef.current.height,
+      scale: viewScale,
+    })
+    return {
+      x: (absolutePos.current.x - parentOffset.x) * viewScale + viewX + moduleX + targetOffsetX,
+      y: (absolutePos.current.y - parentOffset.y) * viewScale + viewY + moduleY + targetOffsetY,
+      width: layoutRef.current.width,
+      height: layoutRef.current.height,
+      scale: viewScale,
+    };
+  }, [])
+
   /** update clone
    *  @param exists bool  set or remove @default false
    * so setClone() sets undefined
@@ -207,13 +272,13 @@ function DragViewActual({
         //   y: getCloneOffset('height') + viewportLayout.y  + movedOffsetRef.current.y * viewportLayout?.scale,
         // })
         if (proxy) {
-          console.log('setClone1', {
-            x: (absolutePos.current.x - parentOffset.x) * viewScale + viewX + moduleX + targetOffsetX,
-            y: (absolutePos.current.y - parentOffset.y) * viewScale + viewY + moduleY + targetOffsetY,
-            width: layoutRef.current.width,
-            height: layoutRef.current.height,
-            scale: viewScale,
-          })
+          // console.log('setClone1', {
+          //   x: (absolutePos.current.x - parentOffset.x) * viewScale + viewX + moduleX + targetOffsetX,
+          //   y: (absolutePos.current.y - parentOffset.y) * viewScale + viewY + moduleY + targetOffsetY,
+          //   width: layoutRef.current.width,
+          //   height: layoutRef.current.height,
+          //   scale: viewScale,
+          // })
           dndId.current !== undefined &&
             ctxSetClone({
               draggableDndId: dndId.current,
@@ -475,9 +540,10 @@ function DragViewActual({
             x: _evt.nativeEvent.locationX,
             y: _evt.nativeEvent.locationY,
           }
+          const aaa = getTargetPostion();
           if (longPressDelay > 0) {
             onLongPressTimeout = setTimeout(() => {
-              console.log('[PanResponder] onPanResponderGrant', restProps.name, layoutRef.current)
+              console.log('[PanResponder] onPanResponderGrant', restProps.name, aaa)
               dndId.current !== undefined &&
                 dndEventManager.handleDragStart(
                   dndId.current,
@@ -491,7 +557,7 @@ function DragViewActual({
               vibroDuration > 0 && Vibration.vibrate(vibroDuration)
             }, longPressDelay)
           } else {
-            console.log('[PanResponder] onPanResponderGrant', restProps.name, layoutRef.current)
+            console.log('[PanResponder] onPanResponderGrant', restProps.name, aaa)
             dndId.current !== undefined &&
               dndEventManager.handleDragStart(
                 dndId.current,
@@ -507,14 +573,14 @@ function DragViewActual({
         onPanResponderMove: (_evt, gestureState) => {
           // console.log('[PanResponder] onPanResponderMove', restProps.name)
           if (shouldDrag) {
-            console.log('onPanResponderMove', {
-              x: gestureState.moveX,
-              y: gestureState.moveY,
-            })
+            // console.log('onPanResponderMove', {
+            //   x: gestureState.moveX,
+            //   y: gestureState.moveY,
+            // })
             dndId.current !== undefined &&
               dndEventManager.handleDragMove(dndId.current, {
-                x: gestureState.moveX + (viewportLayout?.current.x || 0),
-                y: gestureState.moveY + (viewportLayout?.current.y || 0),
+                x: gestureState.moveX,
+                y: gestureState.moveY,
               })
 
             // console.log('pan 1', JSON.stringify({
