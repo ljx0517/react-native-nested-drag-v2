@@ -507,12 +507,14 @@ function DragViewActual({
         onPanResponderMove: (_evt, gestureState) => {
           // console.log('[PanResponder] onPanResponderMove', restProps.name)
           if (shouldDrag) {
-            console.log('onPanResponderMove', { x: gestureState.moveX,
-              y: gestureState.moveY,})
+            console.log('onPanResponderMove', {
+              x: gestureState.moveX,
+              y: gestureState.moveY,
+            })
             dndId.current !== undefined &&
               dndEventManager.handleDragMove(dndId.current, {
-                x: gestureState.moveX,
-                y: gestureState.moveY,
+                x: gestureState.moveX + (viewportLayout?.current.x || 0),
+                y: gestureState.moveY + (viewportLayout?.current.y || 0),
               })
 
             // console.log('pan 1', JSON.stringify({
