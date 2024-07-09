@@ -175,7 +175,6 @@ function DragViewActual({
         console.log('viewportLayout', viewportLayout?.current)
         const targetOffsetX = -(targetWidth - targetWidth * viewScale) / 2
         const targetOffsetY = -(targetHeight - targetHeight * viewScale) / 2
-        console.log('targetOffset', { targetOffsetX, targetOffsetY })
         const viewX = (viewWidth - viewWidth * viewScale) / 2 + viewOffsetX
         const viewY = (viewHeight - viewHeight * viewScale) / 2 + viewOffsetY
         const moduleX = -parentOffset.x * viewScale
@@ -193,7 +192,6 @@ function DragViewActual({
           width: layoutRef.current.width,
           height: layoutRef.current.height,
         }
-        console.log('absPositionRef', absPositionRef.current)
 
         // console.log('setClone10', {
         //   x: (absolutePos.current.x - parentOffset.x),
@@ -509,6 +507,8 @@ function DragViewActual({
         onPanResponderMove: (_evt, gestureState) => {
           // console.log('[PanResponder] onPanResponderMove', restProps.name)
           if (shouldDrag) {
+            console.log('onPanResponderMove', { x: gestureState.moveX,
+              y: gestureState.moveY,})
             dndId.current !== undefined &&
               dndEventManager.handleDragMove(dndId.current, {
                 x: gestureState.moveX,
