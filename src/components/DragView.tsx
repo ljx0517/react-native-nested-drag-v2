@@ -504,7 +504,7 @@ function DragViewActual({
               vibroDuration > 0 && Vibration.vibrate(vibroDuration)
             }, longPressDelay)
           } else {
-            console.log('[PanResponder] onPanResponderGrant', restProps.name)
+            console.log('[PanResponder] onPanResponderGrant', restProps.name, _evt.nativeEvent)
             dndId.current !== undefined &&
               dndEventManager.handleDragStart(
                 dndId.current,
