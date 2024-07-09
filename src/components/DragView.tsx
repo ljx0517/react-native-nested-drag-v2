@@ -301,23 +301,10 @@ function DragViewActual({
 
   const movableDragEnd = useCallback(() => {
     pan.extractOffset()
-    // console.log('setMovedOffset1.1', movedOffsetRef.current,{
-    //   x: Number(JSON.stringify(pan.x)),
-    //   y: Number(JSON.stringify(pan.y))}, viewportLayout )
 
-    // const tfx =Number(JSON.stringify(pan.x))+(layoutRef.current.width - layoutRef.current.width * viewportLayout.scale)/2;
-    // const vfx=viewportLayout.x +(viewportLayout.width -viewportLayout.width*viewportLayout.scale)/2;
-    // const x = (tfx-vfx)/viewportLayout.scale + viewportLayout.x;
-    //
-    // const tfy =Number(JSON.stringify(pan.y))+(layoutRef.current.height - layoutRef.current.height * viewportLayout.scale)/2;
-    // const vfy=viewportLayout.y +(viewportLayout.height -viewportLayout.height*viewportLayout.scale)/2;
-    // const y = (tfy-vfy)/viewportLayout.scale + viewportLayout.y;
-    // console.log('movableDragEnd', {x,y})
     movedOffsetRef.current = {
       x: Number(JSON.stringify(pan.x)),
       y: Number(JSON.stringify(pan.y)),
-      // x: x,
-      // y: y,
     }
 
     setMovedOffset(movedOffsetRef.current)
@@ -490,7 +477,7 @@ function DragViewActual({
           }
           if (longPressDelay > 0) {
             onLongPressTimeout = setTimeout(() => {
-              console.log('[PanResponder] onPanResponderGrant', restProps.name, _evt.nativeEvent)
+              console.log('[PanResponder] onPanResponderGrant', restProps.name, layoutRef.current)
               dndId.current !== undefined &&
                 dndEventManager.handleDragStart(
                   dndId.current,
@@ -504,7 +491,7 @@ function DragViewActual({
               vibroDuration > 0 && Vibration.vibrate(vibroDuration)
             }, longPressDelay)
           } else {
-            console.log('[PanResponder] onPanResponderGrant', restProps.name, _evt.nativeEvent)
+            console.log('[PanResponder] onPanResponderGrant', restProps.name, layoutRef.current)
             dndId.current !== undefined &&
               dndEventManager.handleDragStart(
                 dndId.current,
@@ -625,6 +612,7 @@ function DragViewActual({
       if (width == 0 || height == 0) {
         return
       }
+
       // console.log('measureCallback in drag', restProps.name, {_x, _y, width, height, pageX, pageY})
       // console.log('measureCallback in parentOffset', restProps.name, parentOffset)
       // console.log('measureCallback in movedOffsetRef', restProps.name, movedOffsetRef.current)
@@ -632,6 +620,7 @@ function DragViewActual({
       //   x: pageX + parentOffset.x - movedOffsetRef.current.x,
       //   y: pageY + parentOffset.y - movedOffsetRef.current.y,
       // })
+
       layoutRef.current = { x: pageX, y: pageY, width: width, height: height }
       absolutePos.current = {
         x: pageX + parentOffset.x - movedOffsetRef.current.x,
