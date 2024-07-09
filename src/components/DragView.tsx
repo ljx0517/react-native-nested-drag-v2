@@ -490,7 +490,7 @@ function DragViewActual({
           }
           if (longPressDelay > 0) {
             onLongPressTimeout = setTimeout(() => {
-              console.log('[PanResponder] onPanResponderGrant', restProps.name)
+              console.log('[PanResponder] onPanResponderGrant', restProps.name, _evt.nativeEvent)
               dndId.current !== undefined &&
                 dndEventManager.handleDragStart(
                   dndId.current,
