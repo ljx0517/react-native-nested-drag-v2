@@ -126,7 +126,7 @@ function DragViewActual({
   //   return a - b
   // }, [viewportLayout])
 
-  const getTargetPostion = useCallback(() => {
+  const getTargetPosition = useCallback(() => {
     const {
       // x: targetX, y: targetY,
       width: targetWidth,
@@ -187,7 +187,7 @@ function DragViewActual({
       width: layoutRef.current.width,
       height: layoutRef.current.height,
       scale: viewScale,
-    };
+    }
   }, [])
 
   /** update clone
@@ -540,10 +540,12 @@ function DragViewActual({
             x: _evt.nativeEvent.locationX,
             y: _evt.nativeEvent.locationY,
           }
-          const aaa = getTargetPostion();
+          const targetLayout = getTargetPosition()
           if (longPressDelay > 0) {
             onLongPressTimeout = setTimeout(() => {
-              console.log('[PanResponder] onPanResponderGrant', restProps.name, aaa)
+              console.log('[PanResponder] onPanResponderGrant', restProps.name,
+                { x: gestureState.moveX,
+                y: gestureState.moveY }, targetLayout)
               dndId.current !== undefined &&
                 dndEventManager.handleDragStart(
                   dndId.current,
@@ -551,13 +553,15 @@ function DragViewActual({
                     x: gestureState.moveX,
                     y: gestureState.moveY,
                   },
-                  pointerRef.current,
+                  targetLayout,
                 )
               shouldDrag = true
               vibroDuration > 0 && Vibration.vibrate(vibroDuration)
             }, longPressDelay)
           } else {
-            console.log('[PanResponder] onPanResponderGrant', restProps.name, aaa)
+            console.log('[PanResponder] onPanResponderGrant', restProps.name,
+              { x: gestureState.moveX,
+                y: gestureState.moveY }, targetLayout)
             dndId.current !== undefined &&
               dndEventManager.handleDragStart(
                 dndId.current,
@@ -565,7 +569,7 @@ function DragViewActual({
                   x: gestureState.moveX,
                   y: gestureState.moveY,
                 },
-                pointerRef.current,
+                targetLayout,
               )
             shouldDrag = true
           }

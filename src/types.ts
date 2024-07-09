@@ -30,18 +30,18 @@ export interface ISimplePubSub {
 
 export type DroppableEnterExit = (position: IPosition, payload?: any) => void
 
-export type DroppableDropOver = (position: IPosition, pointer: IPosition, payload?: any, triggerNextDroppable?: () => void) => void
+export type DroppableDropOver = (position: IPosition, payload?: any, triggerNextDroppable?: () => void) => void
 
 export type DraggableEnterOver = (position: IPosition, payload?: any) => void
 
 export type DraggableExit = (position: IPosition, payload?: any, overCount?: number) => void
 
-export type DraggableDragStart = (position: IPosition, location?: IPosition) => void
+export type DraggableDragStart = (position: IPosition, layout?: IViewportLayout) => void
 export type DraggableDrag = (position: IPosition) => void
 
-export type DraggableEnd = (position: IPosition, pointer: IPosition, movableOffset?: IPosition) => void
+export type DraggableEnd = (position: IPosition, movableOffset?: IPosition) => void
 
-export type DraggableDrop = (position: IPosition, pointer: IPosition, movableOffset?: IPosition, payload?: any, overlapIndex?: number) => void
+export type DraggableDrop = (position: IPosition, movableOffset?: IPosition, payload?: any, overlapIndex?: number) => void
 
 export type DroppableSlotActive = (position: IPosition, payload: any) => void
 export type DroppableSlotDeactivate = (position: IPosition, payload: any) => void
@@ -132,7 +132,7 @@ export interface IDndEventManager {
   updateDraggable: (draggable: IDraggable) => void
   unregisterDraggable: (id: number) => void
   /** @param draggableId dndId from registerDraggable */
-  handleDragStart: (draggableId: number, position: IPosition, location: IPosition) => void
+  handleDragStart: (draggableId: number, position: IPosition, layout: IViewportLayout) => void
   /** @param draggableId dndId from registerDraggable */
   handleDragEnd: (draggableId: number, position: IPosition, pointer: IPosition) => void
   /** @param draggableId dndId from registerDraggable */

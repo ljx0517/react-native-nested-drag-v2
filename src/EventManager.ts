@@ -1,4 +1,4 @@
-import { IDroppable, IDraggable, IPosition, IDndEventManager, OverlapMode } from './types'
+import { IDroppable, IDraggable, IPosition, IDndEventManager, OverlapMode, IViewportLayout } from './types'
 
 // const DndEventManagerInstance: DndEventManager | null = null
 export class DndEventManager implements IDndEventManager {
@@ -100,7 +100,7 @@ export class DndEventManager implements IDndEventManager {
     this.draggables = this.draggables.filter((d) => id !== d.id)
   }
 
-  handleDragStart = (draggableId: number, position: IPosition, location: IPosition) => {
+  handleDragStart = (draggableId: number, position: IPosition, layout: IViewportLayout) => {
     const draggable = this.getDraggable(draggableId)
     const drops = this.getDroppableBySlot(draggable?.slots)
     console.log('handleDragStart', position, drops)
@@ -109,10 +109,10 @@ export class DndEventManager implements IDndEventManager {
         d.onSlotActive && d.onSlotActive(position, draggable?.payload)
       })
     }
-    draggable?.onDragStart && draggable.onDragStart(position, location)
+    draggable?.onDragStart && draggable.onDragStart(position, layout)
   }
 
-  handleDragEnd = (draggableId: number, position: IPosition, pointer: IPosition) => {
+  handleDragEnd = (draggableId: number, position: IPosition) => {
     const draggable = this.getDraggable(draggableId)
 
     if (!draggable) {
@@ -134,18 +134,18 @@ export class DndEventManager implements IDndEventManager {
           const matchSlotName = this.matchSlot(draggable, droppable)
           if (matchSlotName) {
             droppable.onDrop && droppable.onDrop(position, draggable.payload)
-            draggable.onDrop && draggable.onDrop(position, pointer, undefined, droppable.payload, index)
+            draggable.onDrop && draggable.onDrop(position, undefined, droppable.payload, index)
           }
         })
       } else {
-        this.callDropWithNextParameter(currentDroppables, position, pointer, draggable)
+        this.callDropWithNextParameter(currentDroppables, position, draggable)
         // draggable.onDrop && draggable.onDrop(position, pointer, undefined, currentDroppables[currentDroppables.length - 1].payload)
       }
     } else {
       // fix: should always call onDragEnd
       // draggable.onDragEnd && draggable.onDragEnd(position)
     }
-    draggable.onDragEnd && draggable.onDragEnd(position, pointer)
+    draggable.onDragEnd && draggable.onDragEnd(position)
     // single mode
     this.currentDroppables = []
   }
@@ -241,23 +241,23 @@ export class DndEventManager implements IDndEventManager {
     return result
   }
 
-  callDropWithNextParameter = (droppables: IDroppable[], position: IPosition, pointer: IPosition, draggable: IDraggable) => {
-    this._drop(droppables, droppables.length - 1, position, pointer, draggable)
+  callDropWithNextParameter = (droppables: IDroppable[], position: IPosition, draggable: IDraggable) => {
+    this._drop(droppables, droppables.length - 1, position, draggable)
   }
 
-  _drop = (droppables: IDroppable[], index: number, position: IPosition, pointer: IPosition, draggable: IDraggable) => {
+  _drop = (droppables: IDroppable[], index: number, position: IPosition, draggable: IDraggable) => {
     if (droppables.length > index) {
       const droppable = droppables[index]
       const nextDrop =
         index > 0
           ? () => {
-              this._drop(droppables, index - 1, position, pointer, draggable)
+              this._drop(droppables, index - 1, position, draggable)
             }
           : undefined
       const matchSlotName = this.matchSlot(draggable, droppable)
       if (matchSlotName) {
-        droppable.onDrop && droppable.onDrop(position, pointer, draggable.payload, nextDrop)
-        draggable.onDrop && draggable.onDrop(position, pointer, undefined, droppable.payload)
+        droppable.onDrop && droppable.onDrop(position, draggable.payload, nextDrop)
+        draggable.onDrop && draggable.onDrop(position, undefined, droppable.payload)
       } else if (nextDrop) {
         nextDrop()
       }
