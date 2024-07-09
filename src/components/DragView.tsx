@@ -151,11 +151,11 @@ function DragViewActual({
           width: targetWidth,
           height: targetHeight,
         } = layoutRef.current
-        let viewWidth = 0;
-        let viewHeight = 0;
-        let viewOffsetX = 0;
-        let viewOffsetY = 0;
-        let viewScale = 1;
+        let viewWidth = 0
+        let viewHeight = 0
+        let viewOffsetX = 0
+        let viewOffsetY = 0
+        let viewScale = 1
         if (viewportLayout && viewportLayout.current) {
           viewWidth = viewportLayout.current.width
           viewHeight = viewportLayout.current.height
