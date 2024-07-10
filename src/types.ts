@@ -132,7 +132,7 @@ export interface IDndEventManager {
   updateDraggable: (draggable: IDraggable) => void
   unregisterDraggable: (id: number) => void
   /** @param draggableId dndId from registerDraggable */
-  handleDragStart: (draggableId: number, position: IPosition, location: IPosition) => void
+  handleDragStart: (draggableId: number, position: IPosition, location: IViewportLayout) => void
   /** @param draggableId dndId from registerDraggable */
   handleDragEnd: (draggableId: number, position: IPosition, pointer: IPosition) => void
   /** @param draggableId dndId from registerDraggable */
