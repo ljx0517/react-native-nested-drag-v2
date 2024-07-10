@@ -541,9 +541,11 @@ function DragViewActual({
           const targetLayout = getTargetPosition()
           if (longPressDelay > 0) {
             onLongPressTimeout = setTimeout(() => {
-              console.log('[PanResponder] onPanResponderGrant', restProps.name,
+              console.log(
+                '[PanResponder] onPanResponderGrant',
+                restProps.name,
                 { x: gestureState.moveX,
-                y: gestureState.moveY }, targetLayout)
+                y: gestureState.moveY }, targetLayout, parentOffset)
               dndId.current !== undefined &&
                 dndEventManager.handleDragStart(
                   dndId.current,
@@ -557,9 +559,11 @@ function DragViewActual({
               vibroDuration > 0 && Vibration.vibrate(vibroDuration)
             }, longPressDelay)
           } else {
-            console.log('[PanResponder] onPanResponderGrant', restProps.name,
+            console.log(
+              '[PanResponder] onPanResponderGrant',
+              restProps.name,
               { x: gestureState.moveX,
-                y: gestureState.moveY }, targetLayout)
+                y: gestureState.moveY }, targetLayout, parentOffset)
             dndId.current !== undefined &&
               dndEventManager.handleDragStart(
                 dndId.current,
