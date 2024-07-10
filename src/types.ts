@@ -37,7 +37,7 @@ export type DraggableEnterOver = (position: IPosition, payload?: any) => void
 export type DraggableExit = (position: IPosition, payload?: any, overCount?: number) => void
 
 export type DraggableDragStart = (position: IPosition, location?: IPosition) => void
-export type DraggableDrag = (position: IPosition) => void
+export type DraggableDrag = (position: IPosition, location: IViewportLayout) => void
 
 export type DraggableEnd = (position: IPosition, pointer: IPosition, movableOffset?: IPosition) => void
 

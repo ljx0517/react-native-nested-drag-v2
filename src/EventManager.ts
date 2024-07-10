@@ -1,4 +1,4 @@
-import { IDroppable, IDraggable, IPosition, IDndEventManager, OverlapMode } from './types'
+import { IDroppable, IDraggable, IPosition, IDndEventManager, OverlapMode, IViewportLayout } from './types'
 
 // const DndEventManagerInstance: DndEventManager | null = null
 export class DndEventManager implements IDndEventManager {
@@ -150,12 +150,12 @@ export class DndEventManager implements IDndEventManager {
     this.currentDroppables = []
   }
 
-  handleDragMove = (draggableId: number, position: IPosition) => {
+  handleDragMove = (draggableId: number, position: IPosition, location: IViewportLayout) => {
     const draggable = this.getDraggable(draggableId)
     if (!draggable) {
       return
     }
-
+    console.log('draggable', draggable)
     const currentDroppables = this.getDroppablesInArea(position)
 
     if (this.overlapMode == 'all') {
@@ -178,7 +178,7 @@ export class DndEventManager implements IDndEventManager {
         // console.warn('watch why here 1')
       }
       // always
-      draggable.onDrag && draggable.onDrag(position)
+      draggable.onDrag && draggable.onDrag(position, location)
       // console.log('currentDroppables1', currentDroppables)
       this.currentDroppables = currentDroppables
     } else {
@@ -206,7 +206,7 @@ export class DndEventManager implements IDndEventManager {
 
       if (currentDroppable) {
         // over
-        this.callOverWithNextParameter(currentDroppables, position, draggable.payload)
+        this.callOverWithNextParameter(currentDroppables, position, location, draggable.payload)
         // draggable.onOver && draggable.onOver(position, currentDroppable.payload)
       } else {
         // not over
@@ -214,7 +214,7 @@ export class DndEventManager implements IDndEventManager {
         // console.warn('watch why here 2')
       }
       // always
-      draggable.onDrag && draggable.onDrag(position)
+      draggable.onDrag && draggable.onDrag(position, location)
       // console.log('currentDroppables2', draggable)
       this.currentDroppables = currentDroppable ? [currentDroppable] : []
     }
@@ -264,17 +264,17 @@ export class DndEventManager implements IDndEventManager {
     }
   }
 
-  callOverWithNextParameter = (droppables: IDroppable[], position: IPosition, payload: any) => {
-    this._over(droppables, droppables.length - 1, position, payload)
+  callOverWithNextParameter = (droppables: IDroppable[], position: IPosition, layout: IViewportLayout, payload: any) => {
+    this._over(droppables, droppables.length - 1, position, layout, payload)
   }
 
-  _over = (droppables: IDroppable[], index: number, position: IPosition, payload: any) => {
+  _over = (droppables: IDroppable[], index: number, position: IPosition, layout: IViewportLayout, payload: any) => {
     if (droppables.length > index) {
       const droppable = droppables[index]
       const nextOver =
         index > 0
           ? () => {
-              this._over(droppables, index - 1, position, payload)
+              this._over(droppables, index - 1, position, layout, payload)
             }
           : undefined
       droppable.onOver && droppable.onOver(position, payload, nextOver)
