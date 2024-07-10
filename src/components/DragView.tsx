@@ -174,13 +174,13 @@ function DragViewActual({
       height: layoutRef.current.height,
     }
 
-    console.log('getTargetPosition', {
-      x: (absolutePos.current.x - parentOffset.x) * viewScale + viewX + moduleX + targetOffsetX,
-      y: (absolutePos.current.y - parentOffset.y) * viewScale + viewY + moduleY + targetOffsetY,
-      width: layoutRef.current.width,
-      height: layoutRef.current.height,
-      scale: viewScale,
-    })
+    // console.log('getTargetPosition', {
+    //   x: (absolutePos.current.x - parentOffset.x) * viewScale + viewX + moduleX + targetOffsetX,
+    //   y: (absolutePos.current.y - parentOffset.y) * viewScale + viewY + moduleY + targetOffsetY,
+    //   width: layoutRef.current.width,
+    //   height: layoutRef.current.height,
+    //   scale: viewScale,
+    // })
     return {
       x: (absolutePos.current.x - parentOffset.x) * viewScale + viewX + moduleX + targetOffsetX,
       y: (absolutePos.current.y - parentOffset.y) * viewScale + viewY + moduleY + targetOffsetY,
@@ -600,13 +600,13 @@ function DragViewActual({
           }
         },
         onPanResponderMove: (_evt, gestureState) => {
-          const targetLayout = getTargetPosition()
-          console.log('[PanResponder] onPanResponderMove', restProps.name, a, gestureState)
+          // console.log('[PanResponder] onPanResponderMove', restProps.name, a, gestureState)
           if (shouldDrag) {
             // console.log('onPanResponderMove', {
             //   x: gestureState.moveX,
             //   y: gestureState.moveY,
             // })
+            const targetLayout = getTargetPosition()
             dndId.current !== undefined &&
               dndEventManager.handleDragMove(
                 dndId.current,
