@@ -600,7 +600,8 @@ function DragViewActual({
           }
         },
         onPanResponderMove: (_evt, gestureState) => {
-          // console.log('[PanResponder] onPanResponderMove', restProps.name)
+          const a = getTargetPosition()
+          console.log('[PanResponder] onPanResponderMove', restProps.name, a)
           if (shouldDrag) {
             // console.log('onPanResponderMove', {
             //   x: gestureState.moveX,
