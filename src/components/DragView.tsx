@@ -174,7 +174,7 @@ function DragViewActual({
       height: layoutRef.current.height,
     }
 
-    console.log('setClone1', {
+    console.log('getTargetPosition', {
       x: (absolutePos.current.x - parentOffset.x) * viewScale + viewX + moduleX + targetOffsetX,
       y: (absolutePos.current.y - parentOffset.y) * viewScale + viewY + moduleY + targetOffsetY,
       width: layoutRef.current.width,
@@ -237,7 +237,7 @@ function DragViewActual({
         //   // pageX,
         //   // pageY,
         // } = viewportLayout!.current
-        console.log('viewportLayout', viewportLayout?.current)
+        // console.log('viewportLayout', viewportLayout?.current)
         const targetOffsetX = -(targetWidth - targetWidth * viewScale) / 2
         const targetOffsetY = -(targetHeight - targetHeight * viewScale) / 2
         const viewX = (viewWidth - viewWidth * viewScale) / 2 + viewOffsetX
@@ -279,6 +279,7 @@ function DragViewActual({
           //   height: layoutRef.current.height,
           //   scale: viewScale,
           // })
+          const position = getTargetPosition()
           dndId.current !== undefined &&
             ctxSetClone({
               draggableDndId: dndId.current,
@@ -289,17 +290,14 @@ function DragViewActual({
               // }),
               pan: pan,
               // @ts-ignore
-              position: {
-                // x: absolutePos.current.x - parentOffset.x,
-                // y: absolutePos.current.y - parentOffset.y,
-                x: (absolutePos.current.x - parentOffset.x) * viewScale + viewX + moduleX + targetOffsetX,
-                y: (absolutePos.current.y - parentOffset.y) * viewScale + viewY + moduleY + targetOffsetY,
-                // x: (absolutePos.current.x - parentOffset.x + viewX + moduleX),
-                // y: (absolutePos.current.y - parentOffset.y + viewY + moduleY),
-                width: layoutRef.current.width,
-                height: layoutRef.current.height,
-                scale: viewScale,
-              },
+              // position: {
+              //   x: (absolutePos.current.x - parentOffset.x) * viewScale + viewX + moduleX + targetOffsetX,
+              //   y: (absolutePos.current.y - parentOffset.y) * viewScale + viewY + moduleY + targetOffsetY,
+              //   width: layoutRef.current.width,
+              //   height: layoutRef.current.height,
+              //   scale: viewScale,
+              // },
+              position,
               opacity: fadeAnim,
               children: children,
             })
