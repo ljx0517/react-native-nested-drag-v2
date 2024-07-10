@@ -136,7 +136,7 @@ export interface IDndEventManager {
   /** @param draggableId dndId from registerDraggable */
   handleDragEnd: (draggableId: number, position: IPosition, pointer: IPosition) => void
   /** @param draggableId dndId from registerDraggable */
-  handleDragMove: (draggableId: number, position: IPosition) => void
+  handleDragMove: (draggableId: number, position: IPosition, location: IViewportLayout) => void
 }
 /** for internal tests */
 export interface ITestDndEventManager extends IDndEventManager {

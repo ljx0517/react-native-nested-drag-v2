@@ -600,7 +600,7 @@ function DragViewActual({
           }
         },
         onPanResponderMove: (_evt, gestureState) => {
-          const a = getTargetPosition()
+          const targetLayout = getTargetPosition()
           console.log('[PanResponder] onPanResponderMove', restProps.name, a, gestureState)
           if (shouldDrag) {
             // console.log('onPanResponderMove', {
@@ -608,10 +608,19 @@ function DragViewActual({
             //   y: gestureState.moveY,
             // })
             dndId.current !== undefined &&
-              dndEventManager.handleDragMove(dndId.current, {
-                x: gestureState.moveX,
-                y: gestureState.moveY,
-              })
+              dndEventManager.handleDragMove(
+                dndId.current,
+                {
+                  x: gestureState.moveX,
+                  y: gestureState.moveY,
+                },
+                {
+                  ...targetLayout,
+                  x: (viewportLayout?.current.pageX || 0) - targetLayout.x,
+                  y: (viewportLayout?.current.pageY || 0) - targetLayout.y,
+                  scale: targetLayout.scale,
+                },
+              )
 
             // console.log('pan 1', JSON.stringify({
             //   x: gestureState.moveX,
