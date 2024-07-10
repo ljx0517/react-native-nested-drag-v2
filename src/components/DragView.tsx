@@ -545,7 +545,13 @@ function DragViewActual({
                 '[PanResponder] onPanResponderGrant',
                 restProps.name,
                 { x: gestureState.moveX,
-                y: gestureState.moveY }, targetLayout, parentOffset)
+                y: gestureState.moveY }, {
+                  ...targetLayout,
+                  x: targetLayout.x + (viewportLayout?.current.x || 0),
+                  y: targetLayout.y + (viewportLayout?.current.y || 0),
+                  scale: targetLayout.scale,
+                },
+              )
               dndId.current !== undefined &&
                 dndEventManager.handleDragStart(
                   dndId.current,
@@ -568,7 +574,13 @@ function DragViewActual({
               '[PanResponder] onPanResponderGrant',
               restProps.name,
               { x: gestureState.moveX,
-                y: gestureState.moveY }, targetLayout, parentOffset)
+                y: gestureState.moveY }, {
+                ...targetLayout,
+                x: targetLayout.x + (viewportLayout?.current.x || 0),
+                y: targetLayout.y + (viewportLayout?.current.y || 0),
+                scale: targetLayout.scale,
+              },
+            )
             dndId.current !== undefined &&
               dndEventManager.handleDragStart(
                 dndId.current,
@@ -576,7 +588,12 @@ function DragViewActual({
                   x: gestureState.moveX,
                   y: gestureState.moveY,
                 },
-                targetLayout,
+                {
+                  ...targetLayout,
+                  x: targetLayout.x + (viewportLayout?.current.x || 0),
+                  y: targetLayout.y + (viewportLayout?.current.y || 0),
+                  scale: targetLayout.scale,
+                },
               )
             shouldDrag = true
           }
