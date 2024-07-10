@@ -545,7 +545,13 @@ function DragViewActual({
                 '[PanResponder] onPanResponderGrant',
                 restProps.name,
                 { x: gestureState.moveX,
-                  y: gestureState.moveY }, targetLayout, viewportLayout
+                  y: gestureState.moveY }, targetLayout, viewportLayout,
+                {
+                  ...targetLayout,
+                  x: (viewportLayout?.current.pageX || 0) - targetLayout.x,
+                  y: (viewportLayout?.current.pageY || 0) - targetLayout.y,
+                  scale: targetLayout.scale,
+                },
               )
               dndId.current !== undefined &&
                 dndEventManager.handleDragStart(
@@ -556,8 +562,8 @@ function DragViewActual({
                   },
                   {
                     ...targetLayout,
-                    x: targetLayout.x + (viewportLayout?.current.x || 0),
-                    y: targetLayout.y + (viewportLayout?.current.y || 0),
+                    x: (viewportLayout?.current.pageX || 0) - targetLayout.x,
+                    y: (viewportLayout?.current.pageY || 0) - targetLayout.y,
                     scale: targetLayout.scale,
                   },
                 )
@@ -569,7 +575,12 @@ function DragViewActual({
               '[PanResponder] onPanResponderGrant',
               restProps.name,
               { x: gestureState.moveX,
-                y: gestureState.moveY }, targetLayout, viewportLayout
+                y: gestureState.moveY }, targetLayout, viewportLayout,{
+                ...targetLayout,
+                x: (viewportLayout?.current.pageX || 0) - targetLayout.x,
+                y: (viewportLayout?.current.pageY || 0) - targetLayout.y,
+                scale: targetLayout.scale,
+              },
             )
             dndId.current !== undefined &&
               dndEventManager.handleDragStart(
@@ -580,8 +591,8 @@ function DragViewActual({
                 },
                 {
                   ...targetLayout,
-                  x: targetLayout.x + (viewportLayout?.current.x || 0),
-                  y: targetLayout.y + (viewportLayout?.current.y || 0),
+                  x: (viewportLayout?.current.pageX || 0) - targetLayout.x,
+                  y: (viewportLayout?.current.pageY || 0) - targetLayout.y,
                   scale: targetLayout.scale,
                 },
               )

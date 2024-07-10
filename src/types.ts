@@ -218,7 +218,7 @@ export interface IDragViewProps extends IDragViewStyleProps, IDraggableEvents, V
   /** in case you want to restore innser state (handy for nested movable) */
   movableOffset?: IPosition
 
-  viewportLayout?: MutableRefObject<IViewportLayout>
+  viewportLayout?: MutableRefObject<IPageViewportLayout>
   slots?: string[]
   viewClassName?: string
   name?: string
